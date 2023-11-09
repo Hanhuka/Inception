@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  nginx-server:
+    build: ./requirements/nginx
+    image: nginx-server
+    container_name: nginx-server
+    ports:
+      - 443:443

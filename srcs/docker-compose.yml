@@ -7,3 +7,8 @@ services:
     container_name: nginx-server
     ports:
       - 443:443
+
+  maria-database:
+    build: ./requirements/mariadb
+    image: maria-database
+    container_name: maria-database

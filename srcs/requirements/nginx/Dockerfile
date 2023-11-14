@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:oldstable-slim
 
 RUN apt update -y
 
@@ -20,6 +20,6 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 	-out /etc/ssl/certs/nginx-selfsigned.crt \
 	-subj "/C=PT/L=Lisbon/O=42 Lisboa/CN=ralves-g.42.fr"
 
-COPY ./conf/my-nginx.conf ./etc/nginx/conf.d
+COPY ./conf/my-nginx.conf /etc/nginx/conf.d
 
 CMD [ "nginx", "-g", "daemon off;" ]

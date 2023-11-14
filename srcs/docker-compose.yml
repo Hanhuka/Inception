@@ -7,8 +7,54 @@ services:
     container_name: nginx-server
     ports:
       - 443:443
+    # restart: on-failure
+    volumes:
+      - wp_vol:/var/www/html
+    networks:
+      - Inception_net
+    depends_on:
+      - wordpress-site
 
   maria-database:
     build: ./requirements/mariadb
     image: maria-database
     container_name: maria-database
+    env_file:
+      - .env
+    restart: on-failure
+    volumes:
+      - mdb_vol:/var/lib/mysql
+    networks:
+      - Inception_net
+
+  wordpress-site:
+    build: ./requirements/wordpress
+    image: wordpress-site
+    container_name: wordpress-site
+    env_file:
+      - .env
+    restart: on-failure
+    volumes:
+      - wp_vol:/var/www/html
+    networks:
+      - Inception_net
+    depends_on:
+      - maria-database
+
+volumes:
+  mdb_vol:
+    name: mdb_vol
+    driver_opts:
+      type: none
+      device: /home/ralves-g/data/database
+      o: bind
+  wp_vol:
+    name: wp_vol
+    driver_opts:
+      type: none
+      device: /home/ralves-g/data/wordpress
+      o: bind
+
+networks:
+  Inception_net:
+    name: Inception

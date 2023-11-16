@@ -7,7 +7,7 @@ services:
     container_name: nginx-server
     ports:
       - 443:443
-    # restart: on-failure
+    restart: on-failure
     volumes:
       - wp_vol:/var/www/html
     networks:
@@ -26,6 +26,12 @@ services:
       - mdb_vol:/var/lib/mysql
     networks:
       - Inception_net
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "--silent"]
+      interval: 5s
+      timeout: 30s
+      retries: 10
+      start_period: 5s
 
   wordpress-site:
     build: ./requirements/wordpress
@@ -39,7 +45,8 @@ services:
     networks:
       - Inception_net
     depends_on:
-      - maria-database
+      maria-database:
+        condition: service_healthy
 
 volumes:
   mdb_vol:

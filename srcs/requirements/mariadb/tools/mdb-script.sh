@@ -10,7 +10,6 @@ echo "Service started, creating admin user..."
 
 mysql -u root -e "CREATE DATABASE $MDB_NAME;"
 
-
 #User@% allows access from all locations
 mysql -u root -e "CREATE USER '$MDB_ADMIN_NAME'@'%' IDENTIFIED BY '$MDB_ADMIN_PASS';"
 
